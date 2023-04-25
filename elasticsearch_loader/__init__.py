@@ -158,7 +158,7 @@ def _json(ctx, files, lines):
 def _parquet(ctx, files):
     if not parquet:
         raise SystemExit("parquet module not found, please install manually")
-    lines = chain(*(parquet.DictReader(x) for x in files))
+    lines = chain(*(parquet.ParquetFile(x).to_pandas().to_dict("records") for x in files))
     load(lines, ctx.obj)
 
 

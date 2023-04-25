@@ -5,7 +5,7 @@ try:
 except ImportError:
     import json  # noqa: F401
 try:
-    import parquet
+    import fastparquet as parquet
 except ImportError:
     parquet = False
 

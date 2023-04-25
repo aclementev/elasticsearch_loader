@@ -5,6 +5,7 @@ from datetime import datetime
 from itertools import chain
 
 import click
+import numpy as np
 from elasticsearch import Elasticsearch, helpers
 from elasticsearch.exceptions import NotFoundError
 from pkg_resources import iter_entry_points
@@ -158,7 +159,7 @@ def _json(ctx, files, lines):
 def _parquet(ctx, files):
     if not parquet:
         raise SystemExit("parquet module not found, please install manually")
-    lines = chain(*(parquet.ParquetFile(x).to_pandas().to_dict("records") for x in files))
+    lines = chain(*(parquet.ParquetFile(x).to_pandas().replace(np.nan, None).to_dict("records") for x in files))
     load(lines, ctx.obj)
 
 
